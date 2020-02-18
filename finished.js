@@ -3,16 +3,18 @@
 (function() {
 
   let data = "no data";
-  let filtered = "no data";
-  let svgContainer = ""; // keep SVG reference in global scope
+  let svgContainer = ""; 
+  let popChartContainer = "";
 
-  // load data and make scatter plot after window loads
   window.onload = function() {
-    svgContainer = d3.select('body')
+    svgContainer = d3.select('#chart')
       .append('svg')
       .attr('width', 500)
       .attr('height', 500);
-    // d3.csv is basically fetch but it can be be passed a csv file as a parameter
+    popChartContainer = d3.select("#popChart")
+      .append('svg')
+      .attr('width', 200)
+      .attr('height', 200);
     d3.csv("gapminder.csv")
           .then((data) => makeScatterPlot(data));
   }
@@ -83,6 +85,10 @@
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+    // let toolTipChart = div.append("div").attr("id", "tipChart")
+    let toolChart = div.append('svg')
+        .attr('width', 200)
+        .attr('height', 200)
 
 
     // append data to SVG and plot as points
@@ -123,7 +129,7 @@
     let year = countryData.map((row) => parseInt(row["year"]));
 
     let axesLimits = findMinMax(year, population);
-    let mapFunctions = drawAxes(axesLimits, "year", "population", toolChart, small_msm);
+    let mapFunctions = drawAxes(axesLimits, "year", "population", toolChart, 200);
     toolChart.append("path")
         .datum(countryData)
         .attr("fill", "none")
@@ -132,7 +138,7 @@
         .attr("d", d3.line()
                     .x(function(d) { return mapFunctions.xScale(d.year) })
                     .y(function(d) { return mapFunctions.yScale(d.population) }))
-    makeLabels(toolChart, small_msm, "Population Over Time For " + country, "Year", "Population (in Millions)");
+    makeLabels(toolChart, 200, "Population Over Time For " + country, "Year", "Population (in Millions)");
 }
 
 

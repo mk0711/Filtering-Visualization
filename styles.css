@@ -33,19 +33,5 @@ b {
     font: 20px sans-serif;
 }
 
-.box select {
-    background-color: #69b3a2;
-    color: white;
-    padding: 12px;
-    width: 250px;
-    border: none;
-    font-size: 20px;
-    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-    -webkit-appearance: button;
-    appearance: button;
-    outline: none;
-}
 
-.box select option {
-    padding: 30px;
 }
