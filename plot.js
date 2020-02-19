@@ -54,6 +54,7 @@ function labels(svgContainer, data) {
         .attr('font-size', '20pt')
 }
 
+
 function makeLabels(svgContainer, msm, title, x, y) {
     svgContainer.append('text')
         .attr('x', (msm.width - 2 * msm.marginAll) / 2 - 90)
