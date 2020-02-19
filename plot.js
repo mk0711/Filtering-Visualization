@@ -3,6 +3,8 @@
 let data = "";
 let svgContainer = "";
 let popChartContainer = "";
+let xScale = "";
+let yXcale = "";
 const msm = {
     width: 1000,
     height: 800,
@@ -37,21 +39,18 @@ function makeScatterPlot(csvData) {
     let mapFunctions = drawAxes(axesLimits, "fertility", "life_expectancy", svgContainer, msm);
     plotData(mapFunctions);
     makeLabels(svgContainer, msm, "Fertility vs Life Expectancy (1980)",'Fertility Rates','Life Expectancy');
+    labels(svgContainer, data);
 }
 
-function showCircles(me) {
-    let selected = me.value;
-    displayOthers = me.checked ? "inline" : "none";
-    display = me.checked ? "none" : "inline";
-    svgContainer.selectAll(".circles")
-        .data(data)
-        .filter(function(d) {return selected != d.year;})
-        .attr("display", displayOthers);
-        
-    svgContainer.selectAll(".circles")
-        .data(data)
-        .filter(function(d) {return selected == d.year;})
-        .attr("display", display);
+function labels(svgContainer, data) {
+    let pop = data.filter(function(d) { return +d["population"] > 100000000 && +d["year"] == 1980})
+    svgContainer.selectAll('.text')
+    .data(pop)
+    .enter()
+    .append('text')
+        .attr('x', function(d) { return xScale(+d['fertility'])})
+        .attr('y', function(d) { return yScale(+d['life_expectancy'])})
+        .text(function(d){ return d["country"]})
 }
 
 function makeLabels(svgContainer, msm, title, x, y) {
@@ -98,10 +97,9 @@ function plotData(map) {
         .attr('cx', xMap)
         .attr('cy', yMap)
         .attr('r', (d) => pop_map_func(d["population"]))
-        .attr('stroke', "#69b3a2")
+        .attr('stroke', "#003366")
         .attr('stroke-width', 2)
         .attr('fill', 'white')
-        .attr("class", "circles")
         .on("mouseover", (d) => {
             toolChart.selectAll("*").remove()
             div.transition()
@@ -122,6 +120,8 @@ function plotData(map) {
                 .duration(500)
                 .style("opacity", 0);
         });
+
+    
 }
 
 function plotPopulation(country, toolChart) {
@@ -147,7 +147,7 @@ function drawAxes(limits, x, y, svgContainer, msm) {
         return +d[x];
     }
 
-    let xScale = d3.scaleLinear()
+     xScale = d3.scaleLinear()
         .domain([limits.xMin - 0.5, limits.xMax + 0.5]) 
         .range([0 + msm.marginAll, msm.width - msm.marginAll])
 
@@ -164,7 +164,7 @@ function drawAxes(limits, x, y, svgContainer, msm) {
         return +d[y]
     }
 
-    let yScale = d3.scaleLinear()
+    yScale = d3.scaleLinear()
         .domain([limits.yMax + 5, limits.yMin - 5])
         .range([0 + msm.marginAll, msm.height - msm.marginAll])
 
