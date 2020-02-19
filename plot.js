@@ -48,9 +48,10 @@ function labels(svgContainer, data) {
     .data(pop)
     .enter()
     .append('text')
-        .attr('x', function(d) { return xScale(+d['fertility'])})
+        .attr('x', function(d) { return xScale(+d['fertility'] - 0.4)})
         .attr('y', function(d) { return yScale(+d['life_expectancy'])})
         .text(function(d){ return d["country"]})
+        .attr('font-size', '20pt')
 }
 
 function makeLabels(svgContainer, msm, title, x, y) {
