@@ -48,7 +48,7 @@ function labels(svgContainer, data) {
     .data(pop)
     .enter()
     .append('text')
-        .attr('x', function(d) { return xScale(+d['fertility'] - 0.4)})
+        .attr('x', function(d) { return xScale(+d['fertility'] +0.2)})
         .attr('y', function(d) { return yScale(+d['life_expectancy'])})
         .text(function(d){ return d["country"]})
         .attr('font-size', '20pt')
